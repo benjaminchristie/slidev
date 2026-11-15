@@ -8,7 +8,7 @@ import { ensurePrefix, slash } from '@antfu/utils'
 import { underline, yellow } from 'ansis'
 import globalDirs from 'global-directory'
 import { resolve as resolveModuleUrl, resolvePath } from 'mlly'
-import { dirname, join, relative, resolve, sep } from 'pathe'
+import { dirname, isAbsolute, join, relative, resolve, sep } from 'pathe'
 import prompts from 'prompts'
 import { resolveGlobal } from 'resolve-global'
 import { findClosestPkgJsonPath, findDepPkgJsonPath } from 'vitefu'
@@ -335,9 +335,11 @@ export function createResolver(type: 'theme' | 'addon', officials: Record<string
     if (name === 'none')
       return ['', null]
 
-    // local path
+    // local path (Windows absolute paths too: D:\\...)
     if (name[0] === '/')
       return [name, name]
+    if (isAbsolute(name))
+      return [name, resolve(name)]
     if (name.startsWith('@/')) {
       return [
         name,
