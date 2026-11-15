@@ -35,7 +35,8 @@ function onClick(e: MouseEvent) {
 
 useSwipeControls(root)
 registerShortcuts()
-if (__SLIDEV_FEATURE_WAKE_LOCK__)
+// Embedded in the editor, the frame may not hold a wake lock (and editing shouldn't keep the screen on).
+if (__SLIDEV_FEATURE_WAKE_LOCK__ && !isEmbedded.value)
   useWakeLock()
 useHideCursorIdle(computed(() => isPlaying.value && !isEmbedded.value && !showEditor.value))
 
