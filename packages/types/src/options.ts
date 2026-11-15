@@ -21,6 +21,11 @@ export interface SlidevEntryOptions {
    * Theme id
    */
   theme?: string
+  /**
+   * Extra addon roots (absolute paths) loaded for every deck, after the deck's own addons.
+   * Lets an editor that embeds Slidev add its editing layer without touching the deck.
+   */
+  extraAddonRoots?: string[]
 
   /**
    * Remote password

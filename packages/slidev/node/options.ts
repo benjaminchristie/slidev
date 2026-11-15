@@ -47,7 +47,10 @@ export async function resolveOptions(
     : undefined
 
   const initialConfig = parser.resolveConfig(initialLoaded.headmatter, themeMeta, entryOptions.entry)
-  const addonRoots = await resolveAddons(initialConfig.addons)
+  const addonRoots = uniq([
+    ...await resolveAddons(initialConfig.addons),
+    ...(entryOptions.extraAddonRoots ?? []),
+  ])
   const roots = uniq([
     ...themeRoots,
     ...addonRoots,

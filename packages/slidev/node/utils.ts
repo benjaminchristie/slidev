@@ -162,8 +162,10 @@ function resolveImportGlobProxyModule(proxyBase: string, content: string) {
 
 export function createMakeAbsoluteImportGlob(baseRoot: string) {
   const proxyModules = new Map<string, string>()
-  const proxyBasename = 'node_modules/.slidev/virtual/import-glob'
-  const proxyBase = slash(join(baseRoot, proxyBasename))
+  // SLIDEV_VIRTUAL_DIR moves these generated files out of the deck folder (an editor embedding
+  // Slidev, or a deck whose node_modules is not writable). The dir must be in server.fs.allow.
+  const proxyDir = process.env.SLIDEV_VIRTUAL_DIR || join(baseRoot, 'node_modules/.slidev/virtual')
+  const proxyBase = slash(join(proxyDir, 'import-glob'))
 
   return function makeAbsoluteImportGlob(
     globs: string[],

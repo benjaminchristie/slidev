@@ -9,8 +9,10 @@ export const templateLayouts: VirtualModuleTemplate = {
     const layouts = objectMap(
       await utils.getLayouts(),
       (k, v) => {
-        imports.push(`import __layout_${k} from "${toAtFS(v)}"`)
-        return [k, `__layout_${k}`]
+        // Indexed names: layout names may contain dashes (two-cols).
+        const id = `__layout_${imports.length}`
+        imports.push(`import ${id} from "${toAtFS(v)}"`)
+        return [k, id]
       },
     )
 

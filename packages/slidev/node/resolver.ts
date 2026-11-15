@@ -309,10 +309,9 @@ export async function resolveEntry(entryRaw: string) {
 export function createResolver(type: 'theme' | 'addon', officials: Record<string, string>) {
   async function promptForInstallation(pkgName: string) {
     // Check if stdin is available for prompts (i.e., is a TTY)
-    if (!process.stdin.isTTY) {
-      console.error(`The ${type} "${pkgName}" was not found and cannot prompt for installation`)
-      process.exit(1)
-    }
+    // Without a terminal there is no one to ask; let the caller (CLI or an embedding app) decide.
+    if (!process.stdin.isTTY)
+      throw new Error(`The ${type} "${pkgName}" was not found and cannot prompt for installation`)
 
     const { confirm } = await prompts({
       name: 'confirm',

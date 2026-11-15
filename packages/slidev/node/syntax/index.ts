@@ -15,6 +15,7 @@ import MarkdownItStyleScoped from './scoped'
 import MarkdownItShiki from './shiki'
 import MarkdownItSlotSugar from './slot-sugar'
 import MarkdownItSnippet from './snippet'
+import MarkdownItSourceLines from './source-lines'
 
 export async function useMarkdownItPlugins(
   md: MarkdownExit,
@@ -35,6 +36,9 @@ export async function useMarkdownItPlugins(
   if (features.katex)
     md.use(MarkdownItKatex, katexOptions)
   md.use(MarkdownItVDrag, markdownTransformMap)
+  // Editors map clicks on the slide back to markdown lines; only useful while editing.
+  if (options.mode === 'dev')
+    md.use(MarkdownItSourceLines, markdownTransformMap as any)
   md.use(MarkdownItSlotSugar)
   if (config.comark || config.mdc)
     md.use(MarkdownItComark)

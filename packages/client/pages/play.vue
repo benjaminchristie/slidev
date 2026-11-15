@@ -102,7 +102,7 @@ const contentStyle = computed(() => {
       </template>
       <template #controls>
         <div
-          v-if="!isPrintMode"
+          v-if="!isPrintMode && !isEmbedded"
           class="absolute bottom-0 left-0 transition duration-300 opacity-0 hover:opacity-100 focus-within:opacity-100 focus-visible:opacity-100"
           :class="[
             persistNav ? '!opacity-100 right-0' : 'opacity-0 p-2',
@@ -113,7 +113,8 @@ const contentStyle = computed(() => {
         </div>
       </template>
     </SlideContainer>
-    <SideEditor v-if="SideEditor && showEditor" :resize="true" />
+    <!-- Embedded in an editor: the host draws its own controls and source editor. -->
+    <SideEditor v-if="SideEditor && showEditor && !isEmbedded" :resize="true" />
   </div>
   <Controls v-if="!isPrintMode" />
   <div id="twoslash-container" />
